@@ -103,12 +103,57 @@ Run the demo:
 python test_run.py
 ```
 
+## Who this is for
+
+### Real-world scenarios
+
+**Software companies — AI coding assistants**
+A development team deploys a LangGraph agent to automatically 
+review pull requests, suggest fixes, and re-review after changes. 
+The agent enters a loop: reviewer finds issues, fixer applies 
+changes, reviewer finds new issues, fixer applies more changes — 
+indefinitely. Without a circuit breaker, this runs for hours. 
+With it, the breaker trips at step 10, writes an incident report, 
+and the on-call engineer is notified immediately.
+
+**Consulting firms — AI research agents**
+A consulting firm deploys an agent to gather market research 
+autonomously. The agent gets stuck repeatedly searching for the 
+same information with slightly different queries, never deciding 
+it has enough data to proceed. The cost ceiling trips the breaker 
+before the bill reaches hundreds of dollars.
+
+**Customer service teams — AI escalation agents**
+A company deploys an agent to handle complex customer complaints 
+autonomously. The agent loops between gathering information and 
+deciding it needs more. The loop detection — same node visited 
+3 times consecutively — kills the run and hands control back 
+to a human agent before the customer has been waiting too long.
+
+### This project is a fit if you are
+
+- An engineering team deploying LangGraph or LangChain 
+  multi-agent workflows in production
+- An AI product team that needs hard cost controls on 
+  autonomous agent runs
+- A team that has experienced or wants to prevent runaway 
+  API costs from agent loops
+- An MLOps engineer building safety infrastructure for 
+  agentic AI systems
+
+### Deployment
+Drop the CircuitBreaker class into any existing LangGraph 
+workflow. Set your step limit, cost ceiling, and error 
+threshold. Every agent run is now protected — with a 
+structured incident report written automatically if 
+anything trips.
+
 ## File structure
 
 - agent.py — LangGraph workflow with three nodes that loop indefinitely
 - circuit_breaker.py — enforcement middleware with four trip conditions
 - test_run.py — demo runner that shows the breaker catching the loop
 
-## Hardware
+## Hardwaressss
 
 Built and tested on Windows 11, 8GB RAM, no GPU. Uses Groq's free tier, so no local model is required.
